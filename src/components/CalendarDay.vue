@@ -53,6 +53,40 @@ export default {
         },
         [this.day.label],
       );
+    const textTopLayer = () =>
+      this.textTop &&
+      h(
+        'div',
+        {
+          class: 'vc-day-layer vc-day-box-center-top',
+        },
+        [
+          h(
+            'span',
+            {
+              class: 'vc-text-top',
+            },
+            [this.textTop],
+          ),
+        ],
+      );
+    const textBottomLayer = () =>
+      this.textBottom &&
+      h(
+        'div',
+        {
+          class: 'vc-day-layer vc-day-box-center-bottom',
+        },
+        [
+          h(
+            'span',
+            {
+              class: 'vc-text-bottom',
+            },
+            [this.textBottom],
+          ),
+        ],
+      );
 
     // Dots layer
     const dotsLayer = () =>
@@ -115,7 +149,14 @@ export default {
           { 'is-not-in-month': !this.inMonth },
         ],
       },
-      [backgroundsLayer(), contentLayer(), dotsLayer(), barsLayer()],
+      [
+        backgroundsLayer(),
+        contentLayer(),
+        dotsLayer(),
+        barsLayer(),
+        textBottomLayer(),
+        textTopLayer(),
+      ],
     );
   },
   inject: ['sharedState'],
@@ -155,6 +196,12 @@ export default {
     },
     dots() {
       return this.glyphs.dots;
+    },
+    textBottom() {
+      return this.glyphs.textBottom;
+    },
+    textTop() {
+      return this.glyphs.textTop;
     },
     hasDots() {
       return !!arrayHasItems(this.dots);
@@ -248,6 +295,8 @@ export default {
         bars: [],
         popovers: [],
         content: [],
+        textTop: '',
+        textBottom: '',
       };
       // Use $set to trigger reactivity in popovers, if needed
       this.$set(
@@ -387,6 +436,10 @@ export default {
         });
       }
     },
+    processText({ textTop, textBottom }, glyphs) {
+      glyphs.textTop = textTop;
+      glyphs.textBottom = textBottom;
+    },
     processPopover(attribute, { popovers }) {
       const { key, customData, popover } = attribute;
       if (!popover) return;
@@ -435,7 +488,9 @@ export default {
 <style lang="postcss" scoped>
 .vc-day {
   position: relative;
-  min-height: 32px;
+  min-width: 60px;
+  min-height: 60px;
+  margin-top: 8px;
   z-index: 1;
   &.is-not-in-month * {
     opacity: 0;
@@ -479,16 +534,21 @@ export default {
   align-items: flex-end;
 }
 
+.vc-day-box-center-top {
+  display: flex;
+  justify-content: center;
+}
+
 .vc-day-content {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  width: 28px;
-  height: 28px;
-  line-height: 28px;
-  border-radius: var(--rounded-full);
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  border-radius: 8px;
   user-select: none;
   cursor: pointer;
   &:hover {
@@ -524,8 +584,9 @@ export default {
 }
 
 .vc-highlight {
-  width: 28px;
-  height: 28px;
+  width: 60px;
+  height: 60px;
+  border-radius: 8px !important;
   &.vc-highlight-base-start {
     width: 50% !important;
     border-radius: 0 !important;
@@ -572,5 +633,17 @@ export default {
   flex-grow: 1;
   height: 3px;
   transition: all var(--day-content-transition-time);
+}
+
+.vc-text-bottom {
+  font-size: var(--text-sm);
+  font-weight: var(--font-bold);
+  color: coral;
+}
+
+.vc-text-top {
+  font-size: var(--text-sm);
+  font-weight: var(--font-bold);
+  color: var(--gray-700);
 }
 </style>
