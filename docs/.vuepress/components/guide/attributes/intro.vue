@@ -80,6 +80,8 @@ export default {
             color: 'purple',
             class: 'rounded-none bg-transparent',
           },
+          textTop: '今天',
+          textBottom: '预约',
           content: {
             class: 'italic',
           },

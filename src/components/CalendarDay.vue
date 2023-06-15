@@ -327,6 +327,7 @@ export default {
         this.processNonHighlight(attr, 'dot', dateInfo, glyphs.dots);
         this.processNonHighlight(attr, 'bar', dateInfo, glyphs.bars);
         this.processPopover(attr, glyphs);
+        this.processText(attr, glyphs);
       });
       this.glyphs = glyphs;
     },

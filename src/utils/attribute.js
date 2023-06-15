@@ -18,6 +18,8 @@ export default class Attribute {
       customData,
       order,
       pinPage,
+      textTop,
+      textBottom,
     },
     theme,
     locale,
@@ -29,6 +31,12 @@ export default class Attribute {
     this.dateOpts = { order, locale };
     this.pinPage = pinPage;
     // Normalize attribute types
+    if (textTop) {
+      this.textTop = textTop;
+    }
+    if (textBottom) {
+      this.textBottom = textBottom;
+    }
     if (highlight) {
       this.highlight = theme.normalizeHighlight(highlight);
     }
