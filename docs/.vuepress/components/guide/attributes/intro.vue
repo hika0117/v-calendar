@@ -75,6 +75,10 @@ export default {
       return [
         // Today attribute
         {
+          isWorkday: true,
+          dates: new Date('2023-06-17'),
+        },
+        {
           highlight: {
             fillMode: 'outline',
             color: 'purple',

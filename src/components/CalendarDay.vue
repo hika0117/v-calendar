@@ -218,11 +218,21 @@ export default {
     hasPopovers() {
       return !!arrayHasItems(this.popovers);
     },
+    isHoliday() {
+      console.log(this.glyphs.isHoliday, this.glyphs.isWorkday);
+      return (
+        (this.day.weekdayPosition === 6 ||
+          this.day.weekdayPosition === 7 ||
+          this.glyphs.isHoliday) &&
+        !this.glyphs.isWorkday
+      );
+    },
     dayContentClass() {
       return [
         'vc-day-content vc-focusable',
         { 'is-disabled': this.isDisabled },
         get(last(this.content), 'class') || '',
+        { 'is-holiday': this.isHoliday },
       ];
     },
     dayContentStyle() {
@@ -297,6 +307,8 @@ export default {
         content: [],
         textTop: '',
         textBottom: '',
+        isHoliday: false,
+        isWorkday: false,
       };
       // Use $set to trigger reactivity in popovers, if needed
       this.$set(
@@ -322,6 +334,7 @@ export default {
           onStartAndEnd,
           onStartOrEnd,
         };
+        this.processHoliday(attr, glyphs);
         this.processHighlight(attr, dateInfo, glyphs);
         this.processNonHighlight(attr, 'content', dateInfo, glyphs.content);
         this.processNonHighlight(attr, 'dot', dateInfo, glyphs.dots);
@@ -437,9 +450,13 @@ export default {
         });
       }
     },
+    processHoliday({ isHoliday, isWorkday }, glyphs) {
+      glyphs.isHoliday = isHoliday || glyphs.isHoliday;
+      glyphs.isWorkday = isWorkday || glyphs.isWorkday;
+    },
     processText({ textTop, textBottom }, glyphs) {
-      glyphs.textTop = textTop;
-      glyphs.textBottom = textBottom;
+      glyphs.textTop = textTop || glyphs.textTop;
+      glyphs.textBottom = textBottom || glyphs.textBottom;
     },
     processPopover(attribute, { popovers }) {
       const { key, customData, popover } = attribute;
@@ -552,6 +569,9 @@ export default {
   border-radius: 8px;
   user-select: none;
   cursor: pointer;
+  &.is-holiday {
+    color: var(--red-500);
+  }
   &:hover {
     background-color: hsla(211, 25%, 84%, 0.3);
   }

@@ -20,6 +20,8 @@ export default class Attribute {
       pinPage,
       textTop,
       textBottom,
+      isHoliday,
+      isWorkday,
     },
     theme,
     locale,
@@ -30,6 +32,8 @@ export default class Attribute {
     this.order = order || 0;
     this.dateOpts = { order, locale };
     this.pinPage = pinPage;
+    this.isHoliday = isHoliday || false;
+    this.isWorkday = isWorkday || false;
     // Normalize attribute types
     if (textTop) {
       this.textTop = textTop;
