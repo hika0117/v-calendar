@@ -219,7 +219,6 @@ export default {
       return !!arrayHasItems(this.popovers);
     },
     isHoliday() {
-      console.log(this.glyphs.isHoliday, this.glyphs.isWorkday);
       return (
         (this.day.weekdayPosition === 6 ||
           this.day.weekdayPosition === 7 ||
